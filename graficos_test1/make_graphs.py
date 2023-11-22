@@ -2,14 +2,27 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import pandas as pd
 from datetime import datetime
+import os
 
 # Best graphs: Data6
+data_selected = "DATA_2023_11_22"
+
+
+def create_folder_if_not_exists(path):
+    """
+    Create a folder at the specified path if it doesn't already exist.
+    """
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f"Folder created at {path}")
+    else:
+        print(f"Folder already exists at {path}")
 
 
 for i in range(10):
     # Read the CSV file
     # Replace with your CSV file path
-    file_path = f'./Testes/DATA_2023_11_16/DATA{i+1}.CSV'
+    file_path = f'./Testes/{data_selected}/DATA{i+1}.CSV'
     data = pd.read_csv(file_path)
     data['Z-Position'] = data['Z-Position'] * 100
     data['Timestamp'] = data['Timestamp'] / 1000
@@ -112,15 +125,21 @@ for i in range(10):
     # if input("Save graphs? ").lower() in ("y", "s"):
     if True:
         # formatted_date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        formatted_date = datetime.now().strftime("%Y-%m-%d")
+        # formatted_date = datetime.now().strftime("%Y-%m-%d")
         # fig1.savefig(f"./Graphs/DATA{i+1}_Descent_Velocity_{formatted_date}.png")
+        create_folder_if_not_exists(f"./Graphs/Z-Position/{data_selected}/")
+        create_folder_if_not_exists(f"./Graphs/Pressure/{data_selected}/")
+        create_folder_if_not_exists(
+            f"./Graphs/Combined/{data_selected}/")
+        create_folder_if_not_exists(
+            f"./Graphs/HeadingVelocity/{data_selected}/")
         fig1.savefig(
-            f"./Graphs/Z-Position/DATA{i+1}_Z-Position_{formatted_date}.png")
+            f"./Graphs/Z-Position/{data_selected}/DATA{i+1}_Z-Position.png")
         fig2.savefig(
-            f"./Graphs/Pressure/DATA{i+1}_Pressure_{formatted_date}.png")
+            f"./Graphs/Pressure/{data_selected}/DATA{i+1}_Pressure.png")
         fig3.savefig(
-            f"./Graphs/Combined/DATA{i+1}_Combined_{formatted_date}.png")
+            f"./Graphs/Combined/{data_selected}/DATA{i+1}_Combined.png")
         fig4.savefig(
-            f"./Graphs/HeadingVelocity/DATA{i+1}_HeadingVelocity_{formatted_date}.png")
+            f"./Graphs/HeadingVelocity/{data_selected}/DATA{i+1}_HeadingVelocity.png")
 
         plt.close()
