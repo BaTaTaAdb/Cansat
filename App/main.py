@@ -40,7 +40,7 @@ def send_serial_data(data: int):
 
         # Optionally, you can add a newline character to signify the end of data
         ser.write(b'\n')
-        print(f"Sent {data}")
+        # print(f"Sent {data}")
 
     except Exception as e:
         print(f"Error sending data: {e}")
