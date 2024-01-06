@@ -7,7 +7,7 @@ from controller import Controller, PS4_VID, PS4_PID, RC_PID, RC_VID
 ser = serial.Serial(
     port='COM3',
     baudrate=9600,
-    timeout=1
+    timeout=2000
 )
 ser.setRTS(0)
 ser.bytesize = serial.EIGHTBITS  # number of bits per bytes
@@ -40,7 +40,8 @@ def send_serial_data(data: int):
 
         # Optionally, you can add a newline character to signify the end of data
         ser.write(b'\n')
-        # print(f"Sent {data}")
+        print(f"Sent {data}")
+        time.sleep(0.01)
 
     except Exception as e:
         print(f"Error sending data: {e}")
@@ -55,35 +56,38 @@ def get_plot_format(ax):
 
 def animate(i, ax, data_list):
     data = read_serial_data()
-    controller_command = controller.get_direction()
     if data:
+        # Process and plot the data
         data_list.append(data)
         data_list = data_list[-50:]  # Keep only the latest 50 data points
 
-    ax.clear()
-    get_plot_format(ax)
-    # Display the controller command
-    ax.set_title(f"Arduino Data - Command: {controller_command}")
+        ax.clear()
+        get_plot_format(ax)
 
-    # Assuming data is a list of 5 elements, plot each as a separate line
-    for j in range(5):
-        ax.plot([d[j] for d in data_list])
+        # Plot each data point
+        for j in range(5):
+            ax.plot([d[j] for d in data_list])
 
-    match controller_command:
-        case "Right":
-            controller_command = 1
-        case "Left":
-            controller_command = -1
-        case _:
-            controller_command = 0
-    send_serial_data(controller_command)
+        # Get controller command
+        controller_command = controller.get_direction()
+        ax.set_title(f"Arduino Data - Command: {controller_command}")
+
+        # Send the command based on controller input
+        match controller_command:
+            case "Right":
+                controller_command = 1
+            case "Left":
+                controller_command = -1
+            case _:
+                controller_command = 0
+        send_serial_data(controller_command)
 
 
 if __name__ == "__main__":
     try:
         data_list = []
-        # controller = Controller(PS4_VID, PS4_PID, "PS4")
-        controller = Controller(RC_VID, RC_PID, "RC")
+        controller = Controller(PS4_VID, PS4_PID, "PS4")
+        # controller = Controller(RC_VID, RC_PID, "RC")
         controller.initialize_device()
         controller.start_reading()
 
