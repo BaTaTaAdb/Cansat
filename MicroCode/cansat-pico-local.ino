@@ -2,6 +2,7 @@
 #include "ServoHandling.h"
 #include "DataHandling.h"
 #include "SharedData.h"
+#include "ScreenHandling.h"
 
 SharedData sharedData;  // Define the shared data object
 ServoData servoData;    // Define the servo data object
@@ -12,11 +13,13 @@ void setup() {
   Serial.begin(9600);
   DataHandlingSetup();
   SensorSetup();
+  ScreenSetup();
 }
 
 void loop() {
   HandleSensors();
   HandleData();
+  HandleScreen();
 }
 
 void setup1() {

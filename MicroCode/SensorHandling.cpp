@@ -30,6 +30,7 @@ unsigned int prevMillis = 0;
 
 int SensorSetup() {
   // Initialize BNO055
+  /*
   if (!bno.begin()) {
     Serial.println("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     return -1;
@@ -43,17 +44,17 @@ int SensorSetup() {
 
   delay(1000);
 
-  /* Set the mode to NDOF */
+  // Set the mode to NDOF
   bno.setMode(adafruit_bno055_opmode_t::OPERATION_MODE_COMPASS);
 
 
   if (sensorDebug) {
     Serial.println("Orientation Sensor Test");
     Serial.println("");
-    /* Display some basic information on this sensor */
+    // Display some basic information on this sensor 
     displaySensorDetails();
 
-    /* Optional: Display current status */
+    // Optional: Display current status 
     displaySensorStatus();
   }
   bno.setExtCrystalUse(true);
@@ -74,6 +75,7 @@ int SensorSetup() {
   // Ask for GPS firmware version
   GPSSerial.println(PMTK_Q_RELEASE);
 
+  */
   return 0;
 }
 
@@ -82,32 +84,46 @@ void HandleSensors() {
   /*while (!bno.isFullyCalibrated()) {
     displayCalStatus();
   }*/
-  /* Get a new sensor event */
+  // Get a new sensor event
+  /*
   sensors_event_t event;
   bno.getEvent(&event);
+  */
 
-  /* Get temperature and  dpressureata from bme280*/
+  // Get temperature and  dpressureata from bme280
+  /*
   float temperatureAmbient = bme.readTemperature();
   float pressure = bme.readPressure() / 100;
   float altitude = bme.readAltitude(seaLevelPressure_hPa);
   float temperatureCPU = analogReadTemp();
+  */
 
-  /* Display the floating point data */
+  // Display the floating point data
+  /*
   if (sensorDebug) {
     Serial.printf("\tCompass: %.4f", event.orientation.x);
     Serial.printf("\tAmbient Temperature: %.2f°C", temperatureAmbient);
     Serial.printf("\tCore temperature: %2.1f°C", temperatureCPU);
     Serial.printf("\tPressure: %.4fHBar", pressure);
 
-    /* New line for the next sample */
+    // New line for the next sample 
     Serial.println("\t");
   }
-
+  */
   // Populate sharedData
+  /*
   sharedData.compass = event.orientation.x;
   sharedData.altitude = altitude;
   sharedData.pressure = pressure;
   sharedData.temperatureAmbient = temperatureAmbient;
+  sharedData.temperatureCPU = temperatureCPU;
+  sharedData.dataReady = true;  // Indicate that new data is ready
+  */
+  float temperatureCPU = analogReadTemp();
+  sharedData.compass = 0;
+  sharedData.altitude = 0;
+  sharedData.pressure = 0;
+  sharedData.temperatureAmbient = 0;
   sharedData.temperatureCPU = temperatureCPU;
   sharedData.dataReady = true;  // Indicate that new data is ready
 

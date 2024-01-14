@@ -2,7 +2,7 @@
 #define SERVOHANDLING_H
 
 #define threshold 7.5
-#define pinServo 2
+#define pinServo 14
 
 void ServoSetup();
 void ServoTest();

@@ -14,7 +14,7 @@ int DataHandlingSetup() {
   pinMode(led, OUTPUT);
   // Initialization for Core 1 (SD card, APC220)
   // Initialize SD card
-  if (!initializeSD()) return -1;
+  //if (!initializeSD()) return -1;
 
   // Initialize APC220
   Serial2.begin(9600);
@@ -58,6 +58,7 @@ void HandleData() {
   // Handle APC220 transmission
   // Format the data into a string or binary format and send over APC220
   // Sends new data
+  /*
   Serial2.print(localData.compass);
   Serial2.print(",");
   Serial2.print(localData.pressure);
@@ -67,6 +68,7 @@ void HandleData() {
   Serial2.print(localData.temperatureCPU);
   Serial2.print(",");
   Serial2.println(localData.altitude);
+  */
 
   digitalWrite(led, LOW);
 
