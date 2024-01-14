@@ -68,19 +68,19 @@ def animate(i, ax, data_list):
         for j in range(5):
             ax.plot([d[j] for d in data_list])
 
-        # Get controller command
-        controller_command = controller.get_direction()
-        ax.set_title(f"Arduino Data - Command: {controller_command}")
+    # Get controller command
+    controller_command = controller.get_direction()
+    ax.set_title(f"Arduino Data - Command: {controller_command}")
 
-        # Send the command based on controller input
-        match controller_command:
-            case "Right":
-                controller_command = 1
-            case "Left":
-                controller_command = -1
-            case _:
-                controller_command = 0
-        send_serial_data(controller_command)
+    # Send the command based on controller input
+    match controller_command:
+        case "Right":
+            controller_command = 1
+        case "Left":
+            controller_command = -1
+        case _:
+            controller_command = 0
+    send_serial_data(controller_command)
 
 
 if __name__ == "__main__":
