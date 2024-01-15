@@ -1,5 +1,5 @@
 import time
-from typing import Literal
+from typing import Literal, final
 import hid
 from tools import get_usb_devices
 import threading
@@ -22,6 +22,7 @@ class Controller:
         self.reading_thread = None
         self.running = False
         self.device_name = device_name
+        self.direction = None
 
     def initialize_device(self):
         try:
@@ -54,6 +55,7 @@ class Controller:
                         self.rc_parse_data(data)
                     else:
                         self.ps4_parse_data(data)
+                    # print(data)
                     # print(self.x, self.y)
                     # print(self.direction)
             except IOError as e:
@@ -65,9 +67,9 @@ class Controller:
         self.x = data[1]
         self.y = data[2]
         self.direction = "None"
-        if data[1] >= 160:
+        if data[1] >= 160 or data[5] == 2:
             self.direction = "Right"
-        elif data[1] <= 96:
+        elif data[1] <= 96 or data[5] == 6:
             self.direction = "Left"
         else:
             self.direction = "None"
@@ -98,10 +100,13 @@ if __name__ == "__main__":
 
     controller.initialize_device()
     controller.start_reading()
-
-    while True:
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            break
-    controller.stop_reading()
+    try:
+        for i in range(1000):
+            print(controller.get_direction())
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        controller.stop_reading()
+        exit()
+    finally:
+        controller.stop_reading()
+        exit()
