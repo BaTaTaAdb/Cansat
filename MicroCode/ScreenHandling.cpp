@@ -158,8 +158,10 @@ volatile bool buttonFlag = false;
 void ScreenSetup(void) {
   pinMode(button1_pin, INPUT);
   pinMode(button2_pin, INPUT);
-  attachInterrupt(digitalPinToInterrupt(button1_pin), HandleScreen, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(button2_pin), HandleScreen, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(button1_pin), ISR_button, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(button2_pin), ISR_button, CHANGE);
+  Wire.setSDA(20);
+  Wire.setSCL(21);
   u8g2.begin();        // start the u8g2 library
   u8g2.clearBuffer();  // clear the internal memory
   u8g2.drawXBMP(0, 0, 128, 64, bitmap_cansat);
@@ -175,9 +177,11 @@ void HandleScreen(void) {
     u8g2.drawXBMP(0, 0, 128, 64, bitmap_helponyourway);
     u8g2.sendBuffer();  // transfer internal memory to the display
     //delay(1000);  // one second delay, but we are only displaying a static text, so it makes no difference
+    Serial.println("Button pressed!");
+    buttonFlag = false;
   }
 }
 
 void ISR_button(void) {
-  buttonFlag = true
+  buttonFlag = true;
 }
