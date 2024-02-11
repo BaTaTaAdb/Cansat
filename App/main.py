@@ -5,7 +5,7 @@ import matplotlib.animation as animation
 from controller import Controller, PS4_VID, PS4_PID, RC_PID, RC_VID
 
 ser = serial.Serial(
-    port='COM3',
+    port='COM5',
     baudrate=9600,
     timeout=2000
 )
